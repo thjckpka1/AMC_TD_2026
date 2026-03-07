@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMC Steel – Tuyển Dụng 2025</title>
+<!-- Font hỗ trợ tiếng Việt đầy đủ -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent:     #1565C0;
+    --accent-mid: #1976D2;
+    --accent-light:#42A5F5;
+    --accent-glow: rgba(21,101,192,0.25);
+    --gold:       #F59E0B;
+    --gold-light: #FCD34D;
+    --bg:         #F0F4F8;
+    --bg-mid:     #E2EAF4;
+    --bg-dark:    #1A2744;
+    --bg-panel:   #0F1C36;
+    --white:      #ffffff;
+    --text:       #1E293B;
+    --text-mid:   #475569;
+    --text-dim:   #94A3B8;
+    --card-bg:    rgba(255,255,255,0.85);
+    --card-border:rgba(21,101,192,0.12);
+    --shadow:     0 4px 24px rgba(21,101,192,0.10);
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    position:fixed; width:10px; height:10px; border-radius:50%;
+    background: var(--accent); pointer-events:none; z-index:9999;
+    transform:translate(-50%,-50%);
+    transition: width 0.2s, height 0.2s;
+  }
+  .cursor-ring {
+    position:fixed; width:34px; height:34px; border-radius:50%;
+    border:1.5px solid rgba(21,101,192,0.45); pointer-events:none; z-index:9998;
+    transform:translate(-50%,-50%);
+    transition: border-color 0.3s;
+  }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:14px 48px;
+    display:flex; justify-content:space-between; align-items:center;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(21,101,192,0.1);
+    box-shadow: 0 2px 20px rgba(21,101,192,0.07);
+    transition: background 0.3s;
+  }
+  .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .nav-logo-img { height:38px; width:auto; display:block; }
+  .nav-logo-fallback {
+    display:none;
+    align-items:center; gap:10px;
+  }
+  .nav-logo-mark {
+    width:38px; height:38px; border-radius:6px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-mid));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Montserrat'; font-weight:900; font-size:14px; color:white;
+  }
+  .nav-logo-name { font-family:'Montserrat'; font-weight:800; font-size:17px; color:var(--accent); letter-spacing:1px; }
+  .nav-logo-name span { color:var(--gold); }
+  .nav-links { display:flex; gap:28px; list-style:none; }
+  .nav-links a {
+    font-size:13px; font-weight:600; letter-spacing:1px; text-transform:uppercase;
+    color:var(--text-mid); text-decoration:none; transition:color 0.2s; cursor:none;
+  }
+  .nav-links a:hover { color:var(--accent); }
+  .nav-cta {
+    padding:9px 22px; background:var(--accent); color:white;
+    font-family:'Montserrat'; font-weight:700; font-size:12px; letter-spacing:1.5px; text-transform:uppercase;
+    border:none; border-radius:4px; cursor:none; text-decoration:none;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .nav-cta:hover { background:var(--accent-mid); box-shadow:0 4px 16px var(--accent-glow); }
+
+  #hero {
+    position:relative; min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    overflow:hidden;
+    background: linear-gradient(135deg, #0F1C36 0%, #1A2F5A 45%, #1565C0 100%);
+  }
+  #hero::before {
+    content:''; position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    animation: gridPulse 9s ease-in-out infinite;
+  }
+  @keyframes gridPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+  .hero-diagonal {
+    position:absolute; left:-10%; top:0; width:55%; height:100%;
+    background: linear-gradient(to bottom right, rgba(245,158,11,0.07), transparent 60%);
+    clip-path: polygon(0 0, 80% 0, 100% 100%, 0 100%);
+  }
+
+  .beam {
+    position:absolute; height:1.5px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+    animation: beamSlide 7s linear infinite; opacity:0;
+  }
+  .beam:nth-child(1){ width:280px; top:22%; animation-delay:0s; }
+  .beam:nth-child(2){ width:440px; top:50%; animation-delay:2.5s; }
+  .beam:nth-child(3){ width:180px; top:74%; animation-delay:5s; }
+  @keyframes beamSlide {
+    0%{left:-500px;opacity:0} 15%{opacity:1} 85%{opacity:1} 100%{left:110%;opacity:0}
+  }
+
+  .particles-container { position:absolute; inset:0; pointer-events:none; }
+  .particle {
+    position:absolute; border-radius:50%;
+    background: var(--accent-light);
+    animation: particleFloat linear infinite; opacity:0;
+  }
+  @keyframes particleFloat {
+    0%{transform:translateY(100vh) scale(0);opacity:0}
+    10%{opacity:.5} 90%{opacity:.2}
+    100%{transform:translateY(-10vh) scale(1);opacity:0}
+  }
+
+  .hero-content { position:relative; z-index:10; text-align:center; padding:0 24px; }
+
+  .hero-logo-wrap { margin-bottom:32px; animation: fadeDown 0.8s ease both; }
+
+  .hero-logo-img {
+    height:90px; width:auto;
+    display:block; margin:0 auto;
+    filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5));
+  }
+  .hero-logo-css {
+    display:none;
+    align-items:center; justify-content:center; gap:16px;
+  }
+  .hero-logo-mark-css {
+    width:76px; height:76px; border-radius:10px;
+    background: linear-gradient(135deg, #0D47A1, var(--accent-mid));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Montserrat'; font-weight:900; font-size:26px; color:white;
+    box-shadow: 0 8px 32px rgba(21,101,192,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+    position:relative; overflow:hidden;
+  }
+  .hero-logo-mark-css::after {
+    content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
+    background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%);
+    animation: logoShine 3.5s linear infinite;
+  }
+  @keyframes logoShine { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+  .hero-logo-text-css { text-align:left; }
+  .hero-logo-text-css .brand {
+    font-family:'Montserrat'; font-weight:900; font-size:30px;
+    color:white; line-height:1; letter-spacing:3px;
+  }
+  .hero-logo-text-css .sub {
+    font-size:11px; color:rgba(255,255,255,0.5); letter-spacing:4px; text-transform:uppercase; margin-top:3px;
+  }
+
+  .hero-eyebrow {
+    font-family:'Montserrat'; font-weight:700;
+    font-size:12px; letter-spacing:5px; text-transform:uppercase;
+    color: var(--gold-light); margin-bottom:16px;
+    animation: fadeDown 0.8s 0.2s ease both;
+    display:flex; align-items:center; justify-content:center; gap:14px;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content:''; display:block; width:36px; height:1px; background:var(--gold-light);
+  }
+
+  .hero-title {
+    font-family:'Montserrat'; font-weight:900;
+    font-size: clamp(52px, 10vw, 108px);
+    line-height:1.05; letter-spacing:2px; color: white;
+    animation: fadeDown 0.8s 0.35s ease both;
+  }
+  .hero-title span { color: var(--gold); text-shadow: 0 0 40px rgba(245,158,11,0.4); }
+
+  .hero-subtitle {
+    font-size:17px; font-weight:400; color:rgba(255,255,255,0.7);
+    margin:20px auto 40px; max-width:600px; line-height:1.8;
+    animation: fadeDown 0.8s 0.5s ease both;
+  }
+
+  .hero-cta-row {
+    display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+    animation: fadeDown 0.8s 0.65s ease both;
+  }
+
+  .btn-primary {
+    display:inline-flex; align-items:center; gap:10px;
+    padding:15px 36px; background: var(--gold); color: var(--bg-dark);
+    font-family:'Montserrat'; font-weight:800; font-size:14px; letter-spacing:1.5px; text-transform:uppercase;
+    border:none; border-radius:4px; cursor:none; text-decoration:none;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    position:relative; overflow:hidden;
+  }
+  .btn-primary::before {
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform:translateX(-100%); transition:transform 0.4s;
+  }
+  .btn-primary:hover::before { transform:translateX(100%); }
+  .btn-primary:hover { background:var(--gold-light); box-shadow:0 8px 28px rgba(245,158,11,0.4); transform:translateY(-2px); }
+
+  .btn-outline {
+    display:inline-flex; align-items:center; gap:10px;
+    padding:14px 36px; background:transparent; color:white;
+    font-family:'Montserrat'; font-weight:700; font-size:14px; letter-spacing:1.5px; text-transform:uppercase;
+    border:1.5px solid rgba(255,255,255,0.35); border-radius:4px; cursor:none; text-decoration:none;
+    transition: all 0.3s;
+  }
+  .btn-outline:hover { border-color:white; background:rgba(255,255,255,0.08); transform:translateY(-2px); }
+
+  .hero-scroll {
+    position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    animation: fadeDown 1s 1s ease both; z-index:10;
+  }
+  .hero-scroll span { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.4); }
+  .scroll-line {
+    width:1px; height:46px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollDrop 2s ease-in-out infinite;
+  }
+  @keyframes scrollDrop {
+    0%{transform:scaleY(0);transform-origin:top}
+    50%{transform:scaleY(1);transform-origin:top}
+    51%{transform-origin:bottom}
+    100%{transform:scaleY(0);transform-origin:bottom}
+  }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+
+  .marquee-wrap {
+    background: var(--bg-dark);
+    border-top:2px solid var(--gold);
+    overflow:hidden; padding:13px 0;
+  }
+  .marquee-track {
+    display:flex; gap:44px;
+    animation:marquee 22s linear infinite; width:max-content;
+  }
+  .marquee-track span {
+    font-family:'Montserrat'; font-weight:700; font-size:13px; letter-spacing:2px;
+    text-transform:uppercase; color:rgba(255,255,255,0.55); white-space:nowrap;
+  }
+  .marquee-track span.dot { color:var(--gold); }
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  .stats-bar {
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-mid) 50%, #1E88E5 100%);
+    padding:24px 40px;
+    display:flex; justify-content:center; flex-wrap:wrap;
+    position:relative; overflow:hidden;
+  }
+  .stats-bar::before {
+    content:''; position:absolute; inset:0;
+    background: repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.04) 60px, rgba(255,255,255,0.04) 61px);
+  }
+  .stat-item {
+    display:flex; flex-direction:column; align-items:center;
+    padding:8px 52px; border-right:1px solid rgba(255,255,255,0.2);
+    position:relative; z-index:1;
+  }
+  .stat-item:last-child { border-right:none; }
+  .stat-num {
+    font-family:'Montserrat'; font-weight:900; font-size:40px; color:white; line-height:1;
+  }
+  .stat-label { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.75); margin-top:4px; }
+
+  section { padding:100px 40px; }
+  .section-wrap { max-width:1100px; margin:0 auto; }
+  .section-label {
+    font-family:'Montserrat'; font-weight:700; font-size:11px; letter-spacing:5px;
+    text-transform:uppercase; color:var(--accent);
+    display:flex; align-items:center; gap:12px; margin-bottom:14px;
+  }
+  .section-label::before { content:''; display:block; width:28px; height:2px; background:var(--accent); }
+  .section-title {
+    font-family:'Montserrat'; font-weight:900;
+    font-size:clamp(36px, 5vw, 60px);
+    color:var(--bg-dark); line-height:1.05; letter-spacing:1px; margin-bottom:14px;
+  }
+  .section-title span { color:var(--accent); }
+
+  #positions { background: var(--bg-mid); }
+
+  .positions-grid {
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+    gap:24px; margin-top:56px;
+  }
+
+  .position-card {
+    background: var(--white); border:1.5px solid var(--card-border);
+    border-radius:12px; padding:36px;
+    position:relative; overflow:hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; cursor:none;
+  }
+  .position-card::after {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    transform:scaleX(0); transform-origin:left; transition: transform 0.4s ease;
+  }
+  .position-card:hover::after { transform:scaleX(1); }
+  .position-card:hover {
+    border-color:rgba(21,101,192,0.25);
+    box-shadow: 0 16px 48px rgba(21,101,192,0.15);
+    transform:translateY(-6px);
+  }
+  .card-num {
+    font-family:'Montserrat'; font-weight:900; font-size:60px;
+    color:rgba(21,101,192,0.06); line-height:1;
+    position:absolute; right:20px; top:12px; transition:color 0.3s;
+  }
+  .position-card:hover .card-num { color:rgba(21,101,192,0.12); }
+  .card-title {
+    font-family:'Montserrat'; font-weight:800; font-size:17px;
+    color:var(--bg-dark); letter-spacing:.5px; text-transform:uppercase;
+    margin-bottom:20px; line-height:1.35; padding-right:56px;
+  }
+  .card-meta { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+  .meta-row { display:flex; align-items:center; gap:10px; font-size:14px; color:var(--text-mid); }
+  .meta-row .icon {
+    width:28px; height:28px; border-radius:6px;
+    background:rgba(21,101,192,0.08); display:flex; align-items:center; justify-content:center;
+    font-size:13px; flex-shrink:0;
+  }
+  .meta-row strong { color:var(--text); }
+  .card-badge {
+    display:inline-block; padding:5px 14px; border-radius:20px;
+    background:rgba(21,101,192,0.09); border:1px solid rgba(21,101,192,0.2);
+    font-family:'Montserrat'; font-size:11px; font-weight:700; letter-spacing:1.5px;
+    text-transform:uppercase; color:var(--accent);
+  }
+  .salary-highlight {
+    background:linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.03));
+    border:1px solid rgba(245,158,11,0.25);
+    border-radius:8px; padding:12px 16px; margin-top:18px;
+    display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-mid);
+  }
+  .salary-highlight .amount {
+    font-family:'Montserrat'; font-weight:800; font-size:19px; color:#B45309;
+  }
+
+  #jobs { background: var(--white); }
+  .jobs-layout {
+    display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-top:56px;
+  }
+  @media(max-width:768px){ .jobs-layout{grid-template-columns:1fr;} }
+
+  .job-block {
+    background:var(--bg); border:1.5px solid var(--card-border);
+    border-radius:12px; padding:36px; position:relative;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .job-block:hover {
+    border-color:rgba(21,101,192,0.25);
+    box-shadow:0 8px 32px rgba(21,101,192,0.08);
+  }
+  .job-block-num {
+    font-family:'Montserrat'; font-weight:900; font-size:72px;
+    color:rgba(21,101,192,0.05); position:absolute; right:16px; bottom:-8px;
+    line-height:1; pointer-events:none;
+  }
+  .job-block-title {
+    font-family:'Montserrat'; font-weight:800; font-size:15px;
+    color:var(--accent); text-transform:uppercase; letter-spacing:.5px;
+    margin-bottom:22px; padding-bottom:14px;
+    border-bottom:1.5px solid rgba(21,101,192,0.15);
+    display:flex; align-items:center; gap:12px;
+  }
+  .job-block-title .num-badge {
+    width:30px; height:30px; background:var(--accent); border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:800; color:white; flex-shrink:0;
+  }
+  .job-tasks { list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .job-tasks li {
+    display:flex; gap:12px; align-items:flex-start;
+    font-size:14px; line-height:1.7; color:var(--text-mid);
+  }
+  .job-tasks li::before { content:'▸'; color:var(--accent); flex-shrink:0; margin-top:2px; }
+
+  #benefits { background:var(--bg-mid); }
+  .benefits-grid {
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    gap:20px; margin-top:56px;
+  }
+  .benefit-card {
+    padding:32px 26px; background:var(--white);
+    border:1.5px solid var(--card-border); border-radius:12px;
+    box-shadow: var(--shadow);
+    transition:all 0.3s; cursor:none; position:relative; overflow:hidden;
+  }
+  .benefit-card::before {
+    content:''; position:absolute; bottom:0; left:0; right:0;
+    height:3px; background:linear-gradient(90deg, var(--accent), var(--accent-light));
+    transform:scaleX(0); transition:transform 0.4s;
+  }
+  .benefit-card:hover::before { transform:scaleX(1); }
+  .benefit-card:hover { transform:translateY(-5px); box-shadow:0 16px 40px rgba(21,101,192,0.12); border-color:rgba(21,101,192,0.2); }
+  .benefit-icon {
+    width:52px; height:52px; border-radius:10px;
+    background:rgba(21,101,192,0.08); border:1px solid rgba(21,101,192,0.12);
+    display:flex; align-items:center; justify-content:center;
+    font-size:24px; margin-bottom:18px; transition:transform 0.3s;
+  }
+  .benefit-card:hover .benefit-icon { transform:scale(1.1) rotate(-5deg); }
+  .benefit-title {
+    font-family:'Montserrat'; font-weight:800; font-size:15px;
+    color:var(--bg-dark); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;
+  }
+  .benefit-desc { font-size:13px; color:var(--text-mid); line-height:1.7; }
+
+  #requirements { background:var(--white); }
+  .req-layout {
+    display:grid; grid-template-columns:1fr 1.15fr; gap:56px; align-items:start;
+    margin-top:56px;
+  }
+  @media(max-width:768px){ .req-layout{grid-template-columns:1fr;} }
+
+  .req-list { display:flex; flex-direction:column; gap:12px; }
+  .req-item {
+    display:flex; gap:14px; align-items:flex-start;
+    padding:16px 20px; background:var(--bg);
+    border:1.5px solid var(--card-border); border-radius:10px;
+    border-left:3px solid var(--accent);
+    transition:transform 0.2s, box-shadow 0.2s;
+  }
+  .req-item:hover { transform:translateX(6px); box-shadow:0 4px 20px rgba(21,101,192,0.1); }
+  .req-item .req-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
+  .req-item .req-text { font-size:14px; color:var(--text-mid); line-height:1.65; }
+  .req-item .req-text strong { color:var(--text); }
+
+  .req-visual {
+    position:relative; background:linear-gradient(135deg, var(--bg-dark), #1A3A6E);
+    border-radius:16px; padding:40px;
+    text-align:center; overflow:hidden;
+    box-shadow:0 16px 48px rgba(21,101,192,0.2);
+  }
+  .pulse-ring {
+    position:absolute; width:180px; height:180px; border-radius:50%;
+    border:1px solid rgba(66,165,245,0.15);
+    top:50%; left:50%; transform:translate(-50%,-50%);
+    animation:pulseRing 3.5s ease-in-out infinite;
+  }
+  .pulse-ring:nth-child(2){ width:280px; height:280px; animation-delay:.6s; opacity:.6; }
+  .pulse-ring:nth-child(3){ width:380px; height:380px; animation-delay:1.2s; opacity:.3; }
+  @keyframes pulseRing {
+    0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.4}
+    50%{transform:translate(-50%,-50%) scale(1.06);opacity:1}
+  }
+  .req-visual-content { position:relative; z-index:1; }
+  .req-visual-title {
+    font-family:'Montserrat'; font-weight:900; font-size:44px;
+    color:white; line-height:1; margin-bottom:6px; letter-spacing:2px;
+  }
+  .req-visual-title span { color:var(--gold); }
+  .req-visual-sub { font-size:12px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:28px; }
+  .industry-tag {
+    display:inline-block; padding:7px 18px; margin:5px;
+    background:rgba(66,165,245,0.12); border:1px solid rgba(66,165,245,0.25);
+    border-radius:20px;
+    font-family:'Montserrat'; font-weight:700; font-size:12px; color:rgba(255,255,255,0.8);
+    letter-spacing:.5px; text-transform:uppercase;
+  }
+
+  #contact {
+    background: linear-gradient(135deg, var(--bg-dark) 0%, #1A3A6E 100%);
+    position:relative; overflow:hidden; text-align:center;
+  }
+  #contact::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 700px 350px at 50% 50%, rgba(66,165,245,0.07), transparent);
+  }
+  .contact-wrap { position:relative; z-index:1; max-width:820px; margin:0 auto; }
+  .contact-tagline {
+    font-family:'Montserrat'; font-weight:900;
+    font-size:clamp(32px, 5.5vw, 58px);
+    color:white; margin-bottom:14px; line-height:1.1;
+  }
+  .contact-tagline span { color:var(--gold); }
+  .contact-sub { font-size:16px; color:rgba(255,255,255,0.6); margin-bottom:48px; line-height:1.7; }
+  .contact-cards {
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+    gap:14px; margin-bottom:44px; text-align:left;
+  }
+  .contact-card {
+    background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12);
+    border-radius:10px; padding:22px;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .contact-card:hover { border-color:rgba(66,165,245,0.4); transform:translateY(-3px); }
+  .contact-card-icon { font-size:22px; margin-bottom:10px; }
+  .contact-card-label { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:5px; }
+  .contact-card-val { font-size:14px; color:rgba(255,255,255,0.85); font-weight:500; line-height:1.6; }
+  .contact-card-val a { color:var(--gold-light); text-decoration:none; }
+  .contact-card-val a:hover { text-decoration:underline; }
+
+  footer {
+    background:#080F1E; border-top:1px solid rgba(255,255,255,0.06);
+    padding:22px 48px;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+  }
+  .footer-brand { font-family:'Montserrat'; font-weight:900; font-size:18px; color:rgba(255,255,255,0.4); letter-spacing:2px; }
+  .footer-brand span { color:var(--gold); }
+  .footer-copy { font-size:12px; color:rgba(255,255,255,0.25); }
+
+  .reveal { opacity:0; transform:translateY(36px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .reveal-left { opacity:0; transform:translateX(-36px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal-left.visible { opacity:1; transform:translateX(0); }
+  .reveal-right { opacity:0; transform:translateX(36px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal-right.visible { opacity:1; transform:translateX(0); }
+  .stagger-1{transition-delay:.1s} .stagger-2{transition-delay:.2s}
+  .stagger-3{transition-delay:.3s} .stagger-4{transition-delay:.4s}
+
+  @media(max-width:600px){
+    .nav-links{display:none} nav{padding:14px 20px}
+    section{padding:72px 20px}
+    .stats-bar{flex-direction:column}
+    .stat-item{border-right:none;border-bottom:1px solid rgba(255,255,255,0.12)}
+    footer{flex-direction:column;text-align:center}
+    .hero-title{font-size:clamp(40px,14vw,72px)}
+    .contact-cards{grid-template-columns:1fr}
+  }
+  .counter{display:inline-block}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a class="nav-logo" href="#hero">
+    <img class="nav-logo-img" src="logo.png" alt="AMC Steel"
+      onerror="this.style.display='none'; document.getElementById('navFallback').style.display='flex';">
+    <div id="navFallback" class="nav-logo-fallback">
+      <div class="nav-logo-mark">AMC</div>
+      <span class="nav-logo-name">STEEL <span>BUILDING</span></span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#positions">Vị Trí</a></li>
+    <li><a href="#jobs">Mô Tả</a></li>
+    <li><a href="#benefits">Quyền Lợi</a></li>
+    <li><a href="#requirements">Yêu Cầu</a></li>
+  </ul>
+  <a class="nav-cta" href="#contact">Ứng Tuyển</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-diagonal"></div>
+  <div class="beam"></div>
+  <div class="beam"></div>
+  <div class="beam"></div>
+  <div class="particles-container" id="particles"></div>
+
+  <div class="hero-content">
+    <div class="hero-logo-wrap">
+      <img class="hero-logo-img" src="logo.png" alt="AMC Steel Building"
+        onerror="this.style.display='none'; document.getElementById('heroCssLogo').style.display='flex';">
+      <div id="heroCssLogo" class="hero-logo-css">
+        <div class="hero-logo-mark-css">AMC</div>
+        <div class="hero-logo-text-css">
+          <div class="brand">STEEL BUILDING</div>
+          <div class="sub">Industrial Manufacturing</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-eyebrow">Thông Báo Tuyển Dụng 2025</div>
+
+    <h1 class="hero-title">
+      Xây Dựng<br><span>Tương Lai</span><br>Cùng AMC
+    </h1>
+
+    <p class="hero-subtitle">
+      Công ty Cổ phần Sản xuất Công nghiệp AMC đang tìm kiếm chuyên gia tài năng<br>
+      trong lĩnh vực xây dựng công nghiệp và kết cấu thép.
+    </p>
+
+    <div class="hero-cta-row">
+      <a class="btn-primary" href="#positions">↓ Khám Phá Vị Trí</a>
+      <a class="btn-outline" href="#contact">Liên Hệ Ngay</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Cuộn xuống</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Quản Lý Dự Án</span><span class="dot">◆</span>
+    <span>Giám Đốc Kỹ Thuật</span><span class="dot">◆</span>
+    <span>Kỹ Sư Giám Sát Thi Công</span><span class="dot">◆</span>
+    <span>Xây Dựng Công Nghiệp</span><span class="dot">◆</span>
+    <span>Kết Cấu Thép</span><span class="dot">◆</span>
+    <span>Lương 15–40 Triệu</span><span class="dot">◆</span>
+    <span>Thưởng 2–12 Tháng</span><span class="dot">◆</span>
+    <span>Hà Nội &amp; Hưng Yên</span><span class="dot">◆</span>
+    <span>Quản Lý Dự Án</span><span class="dot">◆</span>
+    <span>Giám Đốc Kỹ Thuật</span><span class="dot">◆</span>
+    <span>Kỹ Sư Giám Sát Thi Công</span><span class="dot">◆</span>
+    <span>Xây Dựng Công Nghiệp</span><span class="dot">◆</span>
+    <span>Kết Cấu Thép</span><span class="dot">◆</span>
+    <span>Lương 15–40 Triệu</span><span class="dot">◆</span>
+    <span>Thưởng 2–12 Tháng</span><span class="dot">◆</span>
+    <span>Hà Nội &amp; Hưng Yên</span><span class="dot">◆</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num"><span class="counter" data-target="8">0</span></div>
+    <div class="stat-label">Vị Trí Tuyển</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num"><span class="counter" data-target="40">0</span> Tr+</div>
+    <div class="stat-label">Mức Lương Tối Đa</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num"><span class="counter" data-target="12">0</span> Tháng</div>
+    <div class="stat-label">Thưởng Tối Đa</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num"><span class="counter" data-target="3">0</span>+</div>
+    <div class="stat-label">Năm Kinh Nghiệm</div>
+  </div>
+</div>
+
+<!-- POSITIONS -->
+<section id="positions">
+  <div class="section-wrap">
+    <div class="section-label reveal">Chi Tiết Tuyển Dụng</div>
+    <h2 class="section-title reveal"><span>Vị Trí</span> Đang Tuyển</h2>
+    <p class="reveal" style="color:var(--text-mid); max-width:580px; line-height:1.8; font-size:15px;">
+      Tham gia đội ngũ AMC Steel – nơi kỹ thuật gặp tầm nhìn. Chúng tôi đang tìm kiếm <strong>08 chuyên gia</strong> cho 03 vị trí chiến lược.
+    </p>
+
+    <div class="positions-grid">
+      <div class="position-card reveal stagger-1">
+        <div class="card-num">01</div>
+        <div class="card-title">Quản Lý Dự Án</div>
+        <div class="card-meta">
+          <div class="meta-row"><div class="icon">👥</div><span><strong>02</strong> chỉ tiêu</span></div>
+          <div class="meta-row"><div class="icon">🎂</div><span>Tuổi ≤ <strong>45</strong></span></div>
+        </div>
+        <div class="card-badge">Đang Tuyển</div>
+        <div class="salary-highlight">
+          <span>💰</span><span>Lương: <span class="amount">20 – 40 triệu</span> / tháng</span>
+        </div>
+      </div>
+      <div class="position-card reveal stagger-2">
+        <div class="card-num">02</div>
+        <div class="card-title">Giám Đốc Kỹ Thuật &amp; Phụ Trách Thi Công</div>
+        <div class="card-meta">
+          <div class="meta-row"><div class="icon">👥</div><span><strong>01</strong> chỉ tiêu</span></div>
+          <div class="meta-row"><div class="icon">🎂</div><span>Tuổi ≤ <strong>45</strong></span></div>
+        </div>
+        <div class="card-badge">Ưu Tiên</div>
+        <div class="salary-highlight">
+          <span>💰</span><span>Lương: <span class="amount">25 – 40 triệu</span> / tháng</span>
+        </div>
+      </div>
+      <div class="position-card reveal stagger-3">
+        <div class="card-num">03</div>
+        <div class="card-title">Kỹ Sư Giám Sát Thi Công</div>
+        <div class="card-meta">
+          <div class="meta-row"><div class="icon">👥</div><span><strong>05</strong> chỉ tiêu</span></div>
+          <div class="meta-row"><div class="icon">🎂</div><span>Tuổi ≤ <strong>35</strong></span></div>
+        </div>
+        <div class="card-badge">Nhiều Chỉ Tiêu</div>
+        <div class="salary-highlight">
+          <span>💰</span><span>Lương: <span class="amount">15 – 35 triệu</span> / tháng</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:22px; padding:18px 24px; background:rgba(245,158,11,0.07); border:1.5px solid rgba(245,158,11,0.25); border-radius:10px; border-left:3px solid var(--gold);">
+      <p style="font-size:14px; color:var(--text-mid);">
+        <strong style="color:#B45309;">★ Lưu ý:</strong> Mức lương tùy thuộc vị trí công việc, chất lượng ứng viên, có thỏa thuận.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- JOB DESCRIPTIONS -->
+<section id="jobs">
+  <div class="section-wrap">
+    <div class="section-label reveal">Job Description</div>
+    <h2 class="section-title reveal">Mô Tả <span>Công Việc</span></h2>
+
+    <div class="jobs-layout">
+      <div class="job-block reveal-left">
+        <div class="job-block-num">2.1</div>
+        <div class="job-block-title">
+          <span class="num-badge">1</span>Kỹ Sư Giám Sát Thi Công
+        </div>
+        <ul class="job-tasks">
+          <li>Giám sát kỹ thuật thi công, tổ chức thực hiện thi công lắp dựng tại hiện trường theo thiết kế và các yêu cầu kỹ thuật.</li>
+          <li>Phối hợp giám sát đảm bảo ATLĐ, bảo vệ hàng hóa, vệ sinh công trường.</li>
+          <li>Phối hợp lập kế hoạch thi công, quản lý tiến độ, kỹ thuật, chất lượng, khối lượng thi công.</li>
+          <li>Phối hợp với Quản lý dự án hoàn thiện hồ sơ nghiệm thu và thanh quyết toán công trình.</li>
+        </ul>
+      </div>
+      <div class="job-block reveal-right">
+        <div class="job-block-num">2.2</div>
+        <div class="job-block-title">
+          <span class="num-badge">2</span>Giám Đốc KT &amp; Phụ Trách Thi Công
+        </div>
+        <ul class="job-tasks">
+          <li>Từ 03 năm kinh nghiệm ở vị trí tương tự.</li>
+          <li>Quản lý điều hành nhân sự thuộc khối thi công.</li>
+          <li>Quản lý, điều phối toàn bộ công tác thi công lắp đặt các dự án của công ty.</li>
+          <li>Phối hợp cùng Quản lý dự án hoàn thiện hồ sơ nghiệm thu và thanh quyết toán công trình.</li>
+        </ul>
+      </div>
+      <div class="job-block reveal-left stagger-2">
+        <div class="job-block-num">2.3</div>
+        <div class="job-block-title">
+          <span class="num-badge">3</span>Quản Lý Dự Án
+        </div>
+        <ul class="job-tasks">
+          <li>Từ 03 năm kinh nghiệm ở vị trí tương tự.</li>
+          <li>Tìm kiếm, chăm sóc khách hàng, chào giá.</li>
+          <li>Lập kế hoạch, triển khai, điều phối chung dự án.</li>
+          <li>Giám sát và kiểm soát chi phí dự án.</li>
+          <li>Giải quyết các vấn đề phát sinh, thay mặt Ban lãnh đạo trực tiếp làm việc với Khách hàng.</li>
+        </ul>
+      </div>
+      <div class="job-block reveal-right stagger-2" style="background:linear-gradient(135deg, rgba(245,158,11,0.06), rgba(245,158,11,0.02)); border-color:rgba(245,158,11,0.2);">
+        <div class="job-block-title" style="color:#B45309; border-bottom-color:rgba(245,158,11,0.2);">
+          <span class="num-badge" style="background:var(--gold); color:#1a1a1a;">★</span>
+          Môi Trường Làm Việc
+        </div>
+        <ul class="job-tasks">
+          <li>Công ty sản xuất kết cấu thép quy mô lớn, dự án trải dài toàn quốc.</li>
+          <li>Đội ngũ chuyên nghiệp, năng động, nhiều cơ hội thăng tiến rõ ràng.</li>
+          <li>Hỗ trợ công tác xa nhà, phụ cấp đi lại và ăn ở minh bạch.</li>
+          <li>Lộ trình phát triển nghề nghiệp theo năng lực và thâm niên công tác.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section id="benefits">
+  <div class="section-wrap">
+    <div class="section-label reveal">Quyền Lợi Bổ Sung</div>
+    <h2 class="section-title reveal">Tại Sao Chọn <span>AMC?</span></h2>
+    <div class="benefits-grid">
+      <div class="benefit-card reveal stagger-1">
+        <div class="benefit-icon">💵</div>
+        <div class="benefit-title">Lương Cạnh Tranh</div>
+        <div class="benefit-desc">Mức lương 15–40 triệu/tháng, thỏa thuận linh hoạt theo năng lực.</div>
+      </div>
+      <div class="benefit-card reveal stagger-2">
+        <div class="benefit-icon">🏆</div>
+        <div class="benefit-title">Thưởng Hấp Dẫn</div>
+        <div class="benefit-desc">Thưởng lễ, Tết. Tổng thưởng năm: <strong>2–12 tháng lương</strong> tùy năng lực và thâm niên.</div>
+      </div>
+      <div class="benefit-card reveal stagger-3">
+        <div class="benefit-icon">🛡️</div>
+        <div class="benefit-title">BHXH Đầy Đủ</div>
+        <div class="benefit-desc">Đóng bảo hiểm xã hội đầy đủ theo quy định Nhà nước.</div>
+      </div>
+      <div class="benefit-card reveal stagger-4">
+        <div class="benefit-icon">✈️</div>
+        <div class="benefit-title">Du Lịch &amp; Nghỉ Phép</div>
+        <div class="benefit-desc">Chính sách nghỉ phép, du lịch team building theo quy định công ty.</div>
+      </div>
+      <div class="benefit-card reveal stagger-1">
+        <div class="benefit-icon">📈</div>
+        <div class="benefit-title">Thăng Tiến Rõ Ràng</div>
+        <div class="benefit-desc">Lộ trình phát triển nghề nghiệp minh bạch, đánh giá theo thành tích.</div>
+      </div>
+      <div class="benefit-card reveal stagger-2">
+        <div class="benefit-icon">🏗️</div>
+        <div class="benefit-title">Dự Án Lớn</div>
+        <div class="benefit-desc">Tham gia công trình công nghiệp quy mô lớn, trải nghiệm phong phú.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REQUIREMENTS -->
+<section id="requirements">
+  <div class="section-wrap">
+    <div class="section-label reveal">Ứng Viên Lý Tưởng</div>
+    <h2 class="section-title reveal">Yêu Cầu <span>Nhân Sự</span></h2>
+    <div class="req-layout">
+      <div class="req-list">
+        <div class="req-item reveal stagger-1">
+          <div class="req-icon">🎯</div>
+          <div class="req-text"><strong>Kinh nghiệm tối thiểu 2 năm</strong> tùy vị trí. Vị trí quản lý yêu cầu từ 3 năm trở lên.</div>
+        </div>
+        <div class="req-item reveal stagger-2">
+          <div class="req-icon">🏭</div>
+          <div class="req-text">Có kinh nghiệm lĩnh vực <strong>Xây Dựng Công Nghiệp</strong>. Biết tính kết cấu là lợi thế.</div>
+        </div>
+        <div class="req-item reveal stagger-3">
+          <div class="req-icon">🗺️</div>
+          <div class="req-text"><strong>Chấp nhận đi công tác</strong> xa nhà và dài ngày theo yêu cầu dự án.</div>
+        </div>
+        <div class="req-item reveal stagger-4">
+          <div class="req-icon">💪</div>
+          <div class="req-text"><strong>Chịu được áp lực</strong> công việc cao, tinh thần trách nhiệm tốt.</div>
+        </div>
+        <div class="req-item reveal stagger-1">
+          <div class="req-icon">🤝</div>
+          <div class="req-text"><strong>Kỹ năng giao tiếp tốt</strong>, có khả năng làm việc độc lập hoặc theo nhóm.</div>
+        </div>
+        <div class="req-item reveal stagger-2">
+          <div class="req-icon">⚙️</div>
+          <div class="req-text"><strong>Kỹ năng quản lý</strong>, lập kế hoạch và giải quyết vấn đề có hệ thống.</div>
+        </div>
+      </div>
+
+      <div class="req-visual reveal-right">
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring"></div>
+        <div class="req-visual-content">
+          <div class="req-visual-title">NGÀNH <span>ƯU TIÊN</span></div>
+          <div class="req-visual-sub">Kinh Nghiệm Liên Quan</div>
+          <div>
+            <span class="industry-tag">Xây Dựng CN</span>
+            <span class="industry-tag">Kết Cấu Thép</span>
+            <span class="industry-tag">Thi Công Lắp Dựng</span>
+            <span class="industry-tag">Quản Lý Dự Án</span>
+            <span class="industry-tag">Giám Sát Công Trình</span>
+            <span class="industry-tag">Nhà Thép Tiền Chế</span>
+          </div>
+          <div style="margin-top:28px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.1);">
+            <div style="font-family:'Montserrat'; font-weight:700; font-size:11px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:14px;">Địa Điểm Làm Việc</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div style="font-size:14px; color:rgba(255,255,255,0.7); display:flex; align-items:center; gap:8px;"><span style="color:var(--gold);">📍</span> VP: Tòa B MHD Trung Văn, Hà Nội</div>
+              <div style="font-size:14px; color:rgba(255,255,255,0.7); display:flex; align-items:center; gap:8px;"><span style="color:var(--gold);">🏭</span> Nhà máy: Thôn Lạc Cầu, Hưng Yên</div>
+              <div style="font-size:14px; color:rgba(255,255,255,0.7); display:flex; align-items:center; gap:8px;"><span style="color:var(--gold);">🚧</span> Công trường trên toàn quốc</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-wrap contact-wrap">
+    <div class="section-label reveal" style="justify-content:center; color:rgba(255,255,255,0.5);">
+      Ứng Tuyển Ngay
+    </div>
+    <h2 class="contact-tagline reveal">Sẵn Sàng <span>Bắt Đầu?</span></h2>
+    <p class="contact-sub reveal">Gửi CV của bạn ngay hôm nay. Chúng tôi sẽ phản hồi trong vòng 48 giờ.</p>
+    <div class="contact-cards">
+      <div class="contact-card reveal stagger-1">
+        <div class="contact-card-icon">📧</div>
+        <div class="contact-card-label">Email Nhận CV</div>
+        <div class="contact-card-val"><a href="mailto:contact@amcsteel.vn">contact@amcsteel.vn</a></div>
+      </div>
+      <div class="contact-card reveal stagger-2">
+        <div class="contact-card-icon">📞</div>
+        <div class="contact-card-label">Hotline</div>
+        <div class="contact-card-val"><a href="tel:0922745568">0922.745.568</a></div>
+      </div>
+      <div class="contact-card reveal stagger-3">
+        <div class="contact-card-icon">🏢</div>
+        <div class="contact-card-label">Văn Phòng Hà Nội</div>
+        <div class="contact-card-val">Tầng 5, Tòa B – MHD Trung Văn<br>Số 29 Tố Hữu, Đại Mỗ</div>
+      </div>
+      <div class="contact-card reveal stagger-4">
+        <div class="contact-card-icon">🌐</div>
+        <div class="contact-card-label">Website</div>
+        <div class="contact-card-val"><a href="http://www.amcsteel.vn" target="_blank">www.amcsteel.vn</a></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <a class="btn-primary" href="mailto:contact@amcsteel.vn" style="font-size:16px; padding:18px 48px; border-radius:6px;">
+        ✉ Gửi CV Ngay
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">AMC <span>STEEL</span> BUILDING</div>
+  <div class="footer-copy">© 2025 AMC Industrial Manufacturing JSC. All rights reserved.</div>
+  <div class="footer-copy" style="color:rgba(245,158,11,0.5);">info@amcsteel.vn · www.amcsteel.vn</div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX=0, mouseY=0, ringX=0, ringY=0;
+  document.addEventListener('mousemove', e => {
+    mouseX=e.clientX; mouseY=e.clientY;
+    cursor.style.left=mouseX+'px'; cursor.style.top=mouseY+'px';
+  });
+  (function animateRing(){
+    ringX += (mouseX-ringX)*0.12;
+    ringY += (mouseY-ringY)*0.12;
+    ring.style.left=ringX+'px'; ring.style.top=ringY+'px';
+    requestAnimationFrame(animateRing);
+  })();
+  document.querySelectorAll('a,button,.position-card,.benefit-card,.req-item').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ cursor.style.width='18px'; cursor.style.height='18px'; ring.style.borderColor='rgba(21,101,192,0.7)'; });
+    el.addEventListener('mouseleave',()=>{ cursor.style.width='10px'; cursor.style.height='10px'; ring.style.borderColor='rgba(21,101,192,0.45)'; });
+  });
+
+  // Particles
+  const pc = document.getElementById('particles');
+  for(let i=0;i<22;i++){
+    const p=document.createElement('div'); p.className='particle';
+    const size=Math.random()*3+1;
+    p.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;animation-duration:${7+Math.random()*10}s;animation-delay:${Math.random()*-18}s;`;
+    pc.appendChild(p);
+  }
+
+  // Scroll reveal
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>observer.observe(el));
+
+  // Counter
+  const cObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting&&!e.target.classList.contains('counted')){
+        e.target.classList.add('counted');
+        const target=parseInt(e.target.dataset.target);
+        let cur=0; const inc=target/40;
+        const t=setInterval(()=>{ cur+=inc; if(cur>=target){cur=target;clearInterval(t);} e.target.textContent=Math.floor(cur); },40);
+      }
+    });
+  },{threshold:0.5});
+  document.querySelectorAll('.counter').forEach(el=>cObs.observe(el));
+
+  // Nav on scroll
+  window.addEventListener('scroll',()=>{
+    const nav=document.getElementById('mainNav');
+    nav.style.background=window.scrollY>60?'rgba(255,255,255,0.97)':'rgba(255,255,255,0.88)';
+  });
+</script>
+</body>
+</html>
