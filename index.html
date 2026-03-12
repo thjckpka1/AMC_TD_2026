@@ -632,7 +632,7 @@
   </div>
   <div class="stat-item">
     <div class="stat-num" id="statLuong">–</div>
-    <div class="stat-label">Lương Tối Đa (Tr)</div>
+    <div class="stat-label">Thu Nhập Tối Đa (Tr)</div>
   </div>
   <div class="stat-item">
     <div class="stat-num"><span class="counter" data-target="12">0</span> Tháng</div>
@@ -970,7 +970,7 @@
         </div>
         <div class="card-badge">${badge}</div>
         <div class="salary-highlight">
-          <span>💰</span><span>Lương: <span class="amount">${luongStr}</span> / tháng</span>
+          <span>💰</span><span>Thu Nhập: <span class="amount">${luongStr}</span> / tháng</span>
         </div>`;
       grid.appendChild(card);
     });
@@ -988,7 +988,7 @@
     const track = document.getElementById('marqueeTrack');
     let marq = '';
     uniqueViTri.forEach(v => { marq += `<span>${v}</span><span class="dot">◆</span>`; });
-    marq += `<span>Lương đến ${maxLuong} Triệu</span><span class="dot">◆</span>`;
+    marq += `<span>Thu nhập đến ${maxLuong} Triệu</span><span class="dot">◆</span>`;
     marq += `<span>Thưởng 2–12 Tháng</span><span class="dot">◆</span>`;
     marq += `<span>Hà Nội &amp; Hưng Yên</span><span class="dot">◆</span>`;
     // Nhân đôi để marquee liền mạch
