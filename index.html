@@ -751,42 +751,15 @@
     <div class="section-label reveal">Ứng Viên Lý Tưởng</div>
     <h2 class="section-title reveal">Yêu Cầu <span>Nhân Sự</span></h2>
 
-    <div class="req-layout">
-      <!-- LEFT: accordion theo từng vị trí -->
-      <div id="reqAccordion">
-        <div style="text-align:center; padding:40px 0; color:var(--text-mid); display:flex; align-items:center; justify-content:center; gap:12px;" id="reqLoading">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
-          Đang tải…
-        </div>
-      </div>
-
-      <!-- RIGHT: panel cố định -->
-      <div class="req-visual reveal-right">
-        <div class="pulse-ring"></div>
-        <div class="pulse-ring"></div>
-        <div class="pulse-ring"></div>
-        <div class="req-visual-content">
-          <div class="req-visual-title">NGÀNH <span>ƯU TIÊN</span></div>
-          <div class="req-visual-sub">Kinh Nghiệm Liên Quan</div>
-          <div>
-            <span class="industry-tag">Xây Dựng CN</span>
-            <span class="industry-tag">Kết Cấu Thép</span>
-            <span class="industry-tag">Thi Công Lắp Dựng</span>
-            <span class="industry-tag">Quản Lý Dự Án</span>
-            <span class="industry-tag">Giám Sát Công Trình</span>
-            <span class="industry-tag">Nhà Thép Tiền Chế</span>
-          </div>
-          <div style="margin-top:28px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.1);">
-            <div style="font-family:'Montserrat'; font-weight:700; font-size:11px; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:14px;">Địa Điểm Làm Việc</div>
-            <div style="display:flex; flex-direction:column; gap:8px;">
-              <div style="font-size:14px; color:rgba(255,255,255,0.7); display:flex; align-items:center; gap:8px;"><span style="color:var(--gold);">📍</span> VP: Tòa B MHD Trung Văn, Hà Nội</div>
-              <div style="font-size:14px; color:rgba(255,255,255,0.7); display:flex; align-items:center; gap:8px;"><span style="color:var(--gold);">🏭</span> Nhà máy: Thôn Lạc Cầu, Hưng Yên</div>
-              <div style="font-size:14px; color:rgba(255,255,255,0.7); display:flex; align-items:center; gap:8px;"><span style="color:var(--gold);">🚧</span> Công trường trên toàn quốc</div>
-            </div>
-          </div>
-        </div>
+    <div id="reqLoading" style="margin-top:56px; text-align:center; padding:40px 0;">
+      <div style="display:inline-flex;align-items:center;gap:14px;color:var(--text-mid);font-size:15px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        Đang tải…
       </div>
     </div>
+
+    <div class="jobs-layout" id="reqLayout" style="display:none;"></div>
+
   </div>
 </section>
 
@@ -927,13 +900,13 @@
 
     return lines.slice(1).map(line => {
       const vals = splitRow(line, sep);
-      const obj = {};
+      const obj = { _raw: vals }; // lưu raw values theo index để fallback
       // Gán theo tên cột normalize
       headers.forEach((h, i) => { obj[h] = (vals[i] || '').trim(); });
       // Gán thêm theo tên cột chuẩn (theo index) để đảm bảo luôn có key đúng
       COLS.forEach((c, i) => { if (vals[i] !== undefined) obj[c] = (vals[i] || '').trim(); });
       return obj;
-    }).filter(r => Object.values(r).some(v => v));
+    }).filter(r => Object.values(r).some(v => v && typeof v === 'string'));
   }
 
   function splitRow(row, sep) {
@@ -1068,62 +1041,45 @@
   }
 
   // ─────────────────────────────────────────────
-  // RENDER REQUIREMENTS ACCORDION
+  // RENDER REQUIREMENTS – y chang renderJobs, đọc cột yeu_cau (index 8)
   // ─────────────────────────────────────────────
   function renderRequirements(jobs) {
-    const accordion = document.getElementById('reqAccordion');
-    accordion.innerHTML = '';
-
-    const icons = ['🎯','🏭','⚙️','🛡️','📐','🔧'];
+    const layout = document.getElementById('reqLayout');
+    const dirClasses = ['reveal-left','reveal-right'];
+    layout.innerHTML = '';
 
     jobs.forEach((job, i) => {
       const hienThi = job['hien_thi'] || '1';
       if (hienThi === '0') return;
 
-      const viTri    = job['vi_tri']    || `Vị trí ${i+1}`;
-      const luongTu  = job['luong_tu']  || '';
-      const luongDen = job['luong_den'] || '';
-      const yeuCau   = job['yeu_cau']   || '';
-      const reqs     = yeuCau.split(';').map(r => r.trim()).filter(Boolean);
+      const viTri  = job['vi_tri']   || `Vị trí ${i+1}`;
+      // Đọc yeu_cau theo tên cột, fallback sang _raw (index 8)
+      const yeuCauRaw = job['yeu_cau'] || job._raw?.[8] || '';
+      const reqs = yeuCauRaw.split(';').map(r => r.trim()).filter(Boolean);
 
-      const luongStr = luongTu && luongDen ? `${luongTu}–${luongDen} Tr` : luongDen ? `≤${luongDen} Tr` : '';
-
-      const item = document.createElement('div');
-      item.className = 'acc-item reveal';
-
-      item.innerHTML = `
-        <div class="acc-header" onclick="toggleAcc(this.parentElement)">
-          <div class="acc-num">${String(i+1).padStart(2,'0')}</div>
-          <div class="acc-title">${viTri}</div>
-          ${luongStr ? `<div class="acc-salary">💰 ${luongStr}</div>` : ''}
-          <div class="acc-arrow">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-          </div>
+      const block = document.createElement('div');
+      block.className = `job-block ${dirClasses[i % 2]}`;
+      block.innerHTML = `
+        <div class="job-block-num">3.${i+1}</div>
+        <div class="job-block-title">
+          <span class="num-badge">${i+1}</span>${viTri}
         </div>
-        <div class="acc-body">
-          <div class="acc-body-inner">
-            ${reqs.length
-              ? `<div class="acc-req-list">${reqs.map((r,j) => `<div class="acc-req-row"><span>${icons[j % icons.length]}</span> ${r}</div>`).join('')}</div>`
-              : `<p style="color:var(--text-dim);font-size:13px;">Chưa có yêu cầu cụ thể. Liên hệ để biết thêm chi tiết.</p>`
-            }
-          </div>
-        </div>`;
-
-      accordion.appendChild(item);
-
-      // Mở item đầu tiên mặc định
-      if (i === 0) item.classList.add('open');
+        <ul class="job-tasks">
+          ${reqs.length
+            ? reqs.map(r => `<li>${r}</li>`).join('')
+            : '<li>Liên hệ để biết thêm chi tiết yêu cầu.</li>'}
+        </ul>`;
+      layout.appendChild(block);
     });
 
     document.getElementById('reqLoading').style.display = 'none';
-    document.querySelectorAll('#reqAccordion .reveal').forEach(el => observer.observe(el));
+    layout.style.display = 'grid';
+    document.querySelectorAll('#reqLayout .reveal-left, #reqLayout .reveal-right').forEach(el => observer.observe(el));
   }
 
   function toggleAcc(item) {
     const isOpen = item.classList.contains('open');
-    // Đóng tất cả
     document.querySelectorAll('.acc-item.open').forEach(el => el.classList.remove('open'));
-    // Mở cái được click (nếu chưa mở)
     if (!isOpen) item.classList.add('open');
   }
   function animateCounter(id, target, suffix) {
