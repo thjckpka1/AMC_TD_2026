@@ -750,34 +750,17 @@
   <div class="section-wrap">
     <div class="section-label reveal">Ứng Viên Lý Tưởng</div>
     <h2 class="section-title reveal">Yêu Cầu <span>Nhân Sự</span></h2>
+
     <div class="req-layout">
-      <div class="req-list">
-        <div class="req-item reveal stagger-1">
-          <div class="req-icon">🎯</div>
-          <div class="req-text"><strong>Kinh nghiệm tối thiểu 2 năm</strong> tùy vị trí. Vị trí quản lý yêu cầu từ 3 năm trở lên.</div>
-        </div>
-        <div class="req-item reveal stagger-2">
-          <div class="req-icon">🏭</div>
-          <div class="req-text">Có kinh nghiệm lĩnh vực <strong>Xây Dựng Công Nghiệp</strong>. Biết tính kết cấu là lợi thế.</div>
-        </div>
-        <div class="req-item reveal stagger-3">
-          <div class="req-icon">🗺️</div>
-          <div class="req-text"><strong>Chấp nhận đi công tác</strong> xa nhà và dài ngày theo yêu cầu dự án.</div>
-        </div>
-        <div class="req-item reveal stagger-4">
-          <div class="req-icon">💪</div>
-          <div class="req-text"><strong>Chịu được áp lực</strong> công việc cao, tinh thần trách nhiệm tốt.</div>
-        </div>
-        <div class="req-item reveal stagger-1">
-          <div class="req-icon">🤝</div>
-          <div class="req-text"><strong>Kỹ năng giao tiếp tốt</strong>, có khả năng làm việc độc lập hoặc theo nhóm.</div>
-        </div>
-        <div class="req-item reveal stagger-2">
-          <div class="req-icon">⚙️</div>
-          <div class="req-text"><strong>Kỹ năng quản lý</strong>, lập kế hoạch và giải quyết vấn đề có hệ thống.</div>
+      <!-- LEFT: accordion theo từng vị trí -->
+      <div id="reqAccordion">
+        <div style="text-align:center; padding:40px 0; color:var(--text-mid); display:flex; align-items:center; justify-content:center; gap:12px;" id="reqLoading">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+          Đang tải…
         </div>
       </div>
 
+      <!-- RIGHT: panel cố định -->
       <div class="req-visual reveal-right">
         <div class="pulse-ring"></div>
         <div class="pulse-ring"></div>
@@ -861,6 +844,63 @@
   }
   .sheet-error strong { display:block; font-size:16px; margin-bottom:8px; }
   .sheet-error span { font-size:13px; color:#64748B; }
+
+  /* Accordion */
+  .acc-item {
+    border:1.5px solid var(--card-border);
+    border-radius:10px; overflow:hidden;
+    margin-bottom:10px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .acc-item.open {
+    border-color: rgba(21,101,192,0.35);
+    box-shadow: 0 6px 24px rgba(21,101,192,0.1);
+  }
+  .acc-header {
+    display:flex; align-items:center; gap:14px;
+    padding:16px 20px; background:var(--white);
+    cursor:pointer; user-select:none;
+    transition: background 0.2s;
+  }
+  .acc-header:hover { background: rgba(21,101,192,0.04); }
+  .acc-item.open .acc-header { background: rgba(21,101,192,0.06); }
+  .acc-num {
+    width:32px; height:32px; border-radius:7px; flex-shrink:0;
+    background:var(--accent); color:white;
+    font-family:'Montserrat'; font-weight:800; font-size:13px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .acc-title {
+    font-family:'Montserrat'; font-weight:700; font-size:14px;
+    color:var(--bg-dark); text-transform:uppercase; letter-spacing:.4px;
+    flex:1;
+  }
+  .acc-salary {
+    font-family:'Montserrat'; font-weight:800; font-size:13px;
+    color:#B45309; white-space:nowrap;
+  }
+  .acc-arrow {
+    width:22px; height:22px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--accent); transition:transform 0.3s;
+  }
+  .acc-item.open .acc-arrow { transform: rotate(180deg); }
+  .acc-body {
+    max-height:0; overflow:hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    background:var(--bg);
+  }
+  .acc-item.open .acc-body { max-height:600px; }
+  .acc-body-inner {
+    padding:20px 20px 22px 20px;
+    border-top:1px solid var(--card-border);
+  }
+  .acc-req-list { display:flex; flex-direction:column; gap:8px; }
+  .acc-req-row {
+    display:flex; gap:10px; align-items:flex-start;
+    font-size:13.5px; color:var(--text-mid); line-height:1.65;
+  }
+  .acc-req-row::before { content:'✔'; color:var(--accent); flex-shrink:0; font-size:12px; margin-top:3px; }
 </style>
 
 <script>
@@ -870,25 +910,31 @@
   const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vREgILwy_njqIiQ73l70zEIRB8jCptzTe3J4yg8Ql2k4BeUyxjZmWtbNYINOUgibEIhZhZ4UiffjkaF/pub?gid=0&single=true&output=csv';
 
   // ─────────────────────────────────────────────
-  // CSV PARSER – xử lý dấu phẩy trong ngoặc kép
+  // CSV/TSV PARSER – tự nhận dạng tab hoặc dấu phẩy
   // ─────────────────────────────────────────────
   function parseCSV(text) {
-    const lines = text.trim().split('\n');
-    const headers = splitCSVRow(lines[0]).map(h => h.trim().toLowerCase().replace(/\s+/g,'_'));
+    const lines = text.trim().split(/\r?\n/);
+    // Phát hiện separator: nếu dòng đầu có nhiều tab hơn dấu phẩy → dùng tab
+    const firstLine = lines[0];
+    const sep = (firstLine.split('\t').length > firstLine.split(',').length) ? '\t' : ',';
+
+    const headers = splitRow(lines[0], sep).map(h => h.trim().toLowerCase().replace(/\s+/g,'_').replace(/[^\w]/g,''));
     return lines.slice(1).map(line => {
-      const vals = splitCSVRow(line);
+      const vals = splitRow(line, sep);
       const obj = {};
       headers.forEach((h, i) => { obj[h] = (vals[i] || '').trim(); });
       return obj;
-    }).filter(r => r[headers[0]]); // bỏ dòng trống
+    }).filter(r => Object.values(r).some(v => v)); // bỏ dòng hoàn toàn trống
   }
 
-  function splitCSVRow(row) {
+  function splitRow(row, sep) {
+    if (sep === '\t') return row.split('\t'); // TSV không cần xử lý quote
+    // CSV: xử lý dấu phẩy trong ngoặc kép
     const result = []; let cur = ''; let inQ = false;
     for (let i = 0; i < row.length; i++) {
       const c = row[i];
       if (c === '"') { inQ = !inQ; }
-      else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+      else if (c === sep && !inQ) { result.push(cur); cur = ''; }
       else { cur += c; }
     }
     result.push(cur);
@@ -1013,8 +1059,64 @@
   }
 
   // ─────────────────────────────────────────────
-  // COUNTER ANIMATION
+  // RENDER REQUIREMENTS ACCORDION
   // ─────────────────────────────────────────────
+  function renderRequirements(jobs) {
+    const accordion = document.getElementById('reqAccordion');
+    accordion.innerHTML = '';
+
+    const icons = ['🎯','🏭','⚙️','🛡️','📐','🔧'];
+
+    jobs.forEach((job, i) => {
+      const hienThi = job['hien_thi'] || '1';
+      if (hienThi === '0') return;
+
+      const viTri    = job['vi_tri']    || `Vị trí ${i+1}`;
+      const luongTu  = job['luong_tu']  || '';
+      const luongDen = job['luong_den'] || '';
+      const yeuCau   = job['yeu_cau']   || '';
+      const reqs     = yeuCau.split(';').map(r => r.trim()).filter(Boolean);
+
+      const luongStr = luongTu && luongDen ? `${luongTu}–${luongDen} Tr` : luongDen ? `≤${luongDen} Tr` : '';
+
+      const item = document.createElement('div');
+      item.className = 'acc-item reveal';
+
+      item.innerHTML = `
+        <div class="acc-header" onclick="toggleAcc(this.parentElement)">
+          <div class="acc-num">${String(i+1).padStart(2,'0')}</div>
+          <div class="acc-title">${viTri}</div>
+          ${luongStr ? `<div class="acc-salary">💰 ${luongStr}</div>` : ''}
+          <div class="acc-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            ${reqs.length
+              ? `<div class="acc-req-list">${reqs.map((r,j) => `<div class="acc-req-row"><span>${icons[j % icons.length]}</span> ${r}</div>`).join('')}</div>`
+              : `<p style="color:var(--text-dim);font-size:13px;">Chưa có yêu cầu cụ thể. Liên hệ để biết thêm chi tiết.</p>`
+            }
+          </div>
+        </div>`;
+
+      accordion.appendChild(item);
+
+      // Mở item đầu tiên mặc định
+      if (i === 0) item.classList.add('open');
+    });
+
+    document.getElementById('reqLoading').style.display = 'none';
+    document.querySelectorAll('#reqAccordion .reveal').forEach(el => observer.observe(el));
+  }
+
+  function toggleAcc(item) {
+    const isOpen = item.classList.contains('open');
+    // Đóng tất cả
+    document.querySelectorAll('.acc-item.open').forEach(el => el.classList.remove('open'));
+    // Mở cái được click (nếu chưa mở)
+    if (!isOpen) item.classList.add('open');
+  }
   function animateCounter(id, target, suffix) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -1034,7 +1136,31 @@
     try {
       const res = await fetch(SHEET_CSV_URL);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const text = await res.text();
+
+      // Google Sheets CSV đôi khi trả về bytes UTF-8 nhưng bị browser decode sai.
+      // Giải pháp: đọc raw ArrayBuffer → thử UTF-8 trước, nếu vẫn mojibake thì
+      // decode latin1 rồi encode lại thủ công qua escape/decodeURIComponent.
+      const buffer = await res.arrayBuffer();
+      const bytes = new Uint8Array(buffer);
+
+      // Phát hiện BOM UTF-8 (EF BB BF) hoặc thử decode UTF-8
+      let text;
+      try {
+        const decoded = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+        // Kiểm tra xem có bị mojibake không (dấu hiệu: Ã xuất hiện nhiều)
+        const mojibakeScore = (decoded.match(/Ã/g) || []).length;
+        if (mojibakeScore > 3) throw new Error('mojibake');
+        text = decoded;
+      } catch {
+        // Fallback: decode từng byte latin1 → chuỗi binary → encode đúng UTF-8
+        let latin1 = '';
+        bytes.forEach(b => { latin1 += String.fromCharCode(b); });
+        try {
+          text = decodeURIComponent(escape(latin1));
+        } catch {
+          text = latin1; // last resort
+        }
+      }
 
       if (!text || text.trim().length < 10) {
         throw new Error('Sheet trống hoặc chưa có dữ liệu. Hãy thêm ít nhất 1 dòng vào Google Sheet và đảm bảo đã Publish.');
@@ -1045,6 +1171,7 @@
 
       renderPositions(jobs);
       renderJobs(jobs);
+      renderRequirements(jobs);
 
     } catch (err) {
       console.error('Sheet error:', err);
