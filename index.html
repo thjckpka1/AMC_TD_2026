@@ -612,21 +612,13 @@
 
 <!-- MARQUEE -->
 <div class="marquee-wrap">
-  <div class="marquee-track">
-    <span>Quản Lý Dự Án</span><span class="dot">◆</span>
-    <span>Giám Đốc Kỹ Thuật</span><span class="dot">◆</span>
-    <span>Kỹ Sư Giám Sát Thi Công</span><span class="dot">◆</span>
+  <div class="marquee-track" id="marqueeTrack">
     <span>Xây Dựng Công Nghiệp</span><span class="dot">◆</span>
     <span>Kết Cấu Thép</span><span class="dot">◆</span>
-    <span>Lương 15–40 Triệu</span><span class="dot">◆</span>
     <span>Thưởng 2–12 Tháng</span><span class="dot">◆</span>
     <span>Hà Nội &amp; Hưng Yên</span><span class="dot">◆</span>
-    <span>Quản Lý Dự Án</span><span class="dot">◆</span>
-    <span>Giám Đốc Kỹ Thuật</span><span class="dot">◆</span>
-    <span>Kỹ Sư Giám Sát Thi Công</span><span class="dot">◆</span>
     <span>Xây Dựng Công Nghiệp</span><span class="dot">◆</span>
     <span>Kết Cấu Thép</span><span class="dot">◆</span>
-    <span>Lương 15–40 Triệu</span><span class="dot">◆</span>
     <span>Thưởng 2–12 Tháng</span><span class="dot">◆</span>
     <span>Hà Nội &amp; Hưng Yên</span><span class="dot">◆</span>
   </div>
@@ -635,20 +627,20 @@
 <!-- STATS -->
 <div class="stats-bar">
   <div class="stat-item">
-    <div class="stat-num"><span class="counter" data-target="8">0</span></div>
-    <div class="stat-label">Vị Trí Tuyển</div>
+    <div class="stat-num" id="statViTri">–</div>
+    <div class="stat-label">Chỉ Tiêu Tuyển</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num"><span class="counter" data-target="40">0</span> Tr+</div>
-    <div class="stat-label">Mức Lương Tối Đa</div>
+    <div class="stat-num" id="statLuong">–</div>
+    <div class="stat-label">Lương Tối Đa (Tr)</div>
   </div>
   <div class="stat-item">
     <div class="stat-num"><span class="counter" data-target="12">0</span> Tháng</div>
     <div class="stat-label">Thưởng Tối Đa</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num"><span class="counter" data-target="3">0</span>+</div>
-    <div class="stat-label">Năm Kinh Nghiệm</div>
+    <div class="stat-num" id="statViTriCount">–</div>
+    <div class="stat-label">Vị Trí Khác Nhau</div>
   </div>
 </div>
 
@@ -657,50 +649,22 @@
   <div class="section-wrap">
     <div class="section-label reveal">Chi Tiết Tuyển Dụng</div>
     <h2 class="section-title reveal"><span>Vị Trí</span> Đang Tuyển</h2>
-    <p class="reveal" style="color:var(--text-mid); max-width:580px; line-height:1.8; font-size:15px;">
-      Tham gia đội ngũ AMC Steel – nơi kỹ thuật gặp tầm nhìn. Chúng tôi đang tìm kiếm <strong>08 chuyên gia</strong> cho 03 vị trí chiến lược.
+    <p class="reveal" id="positionsIntro" style="color:var(--text-mid); max-width:580px; line-height:1.8; font-size:15px;">
+      Tham gia đội ngũ AMC Steel – nơi kỹ thuật gặp tầm nhìn.
     </p>
 
-    <div class="positions-grid">
-      <div class="position-card reveal stagger-1">
-        <div class="card-num">01</div>
-        <div class="card-title">Quản Lý Dự Án</div>
-        <div class="card-meta">
-          <div class="meta-row"><div class="icon">👥</div><span><strong>02</strong> chỉ tiêu</span></div>
-          <div class="meta-row"><div class="icon">🎂</div><span>Tuổi ≤ <strong>45</strong></span></div>
-        </div>
-        <div class="card-badge">Đang Tuyển</div>
-        <div class="salary-highlight">
-          <span>💰</span><span>Lương: <span class="amount">20 – 40 triệu</span> / tháng</span>
-        </div>
-      </div>
-      <div class="position-card reveal stagger-2">
-        <div class="card-num">02</div>
-        <div class="card-title">Giám Đốc Kỹ Thuật &amp; Phụ Trách Thi Công</div>
-        <div class="card-meta">
-          <div class="meta-row"><div class="icon">👥</div><span><strong>01</strong> chỉ tiêu</span></div>
-          <div class="meta-row"><div class="icon">🎂</div><span>Tuổi ≤ <strong>45</strong></span></div>
-        </div>
-        <div class="card-badge">Ưu Tiên</div>
-        <div class="salary-highlight">
-          <span>💰</span><span>Lương: <span class="amount">25 – 40 triệu</span> / tháng</span>
-        </div>
-      </div>
-      <div class="position-card reveal stagger-3">
-        <div class="card-num">03</div>
-        <div class="card-title">Kỹ Sư Giám Sát Thi Công</div>
-        <div class="card-meta">
-          <div class="meta-row"><div class="icon">👥</div><span><strong>05</strong> chỉ tiêu</span></div>
-          <div class="meta-row"><div class="icon">🎂</div><span>Tuổi ≤ <strong>35</strong></span></div>
-        </div>
-        <div class="card-badge">Nhiều Chỉ Tiêu</div>
-        <div class="salary-highlight">
-          <span>💰</span><span>Lương: <span class="amount">15 – 35 triệu</span> / tháng</span>
-        </div>
+    <!-- Loading state -->
+    <div id="positionsLoading" style="margin-top:56px; text-align:center; padding:60px 0;">
+      <div style="display:inline-flex;align-items:center;gap:14px;color:var(--text-mid);font-size:15px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        Đang tải dữ liệu tuyển dụng…
       </div>
     </div>
 
-    <div class="reveal" style="margin-top:22px; padding:18px 24px; background:rgba(245,158,11,0.07); border:1.5px solid rgba(245,158,11,0.25); border-radius:10px; border-left:3px solid var(--gold);">
+    <div class="positions-grid" id="positionsGrid" style="display:none;"></div>
+
+    <div id="positionsNote" class="reveal" style="display:none; margin-top:22px; padding:18px 24px; background:rgba(245,158,11,0.07); border:1.5px solid rgba(245,158,11,0.25); border-radius:10px; border-left:3px solid var(--gold);">
       <p style="font-size:14px; color:var(--text-mid);">
         <strong style="color:#B45309;">★ Lưu ý:</strong> Mức lương tùy thuộc vị trí công việc, chất lượng ứng viên, có thỏa thuận.
       </p>
@@ -714,45 +678,18 @@
     <div class="section-label reveal">Job Description</div>
     <h2 class="section-title reveal">Mô Tả <span>Công Việc</span></h2>
 
-    <div class="jobs-layout">
-      <div class="job-block reveal-left">
-        <div class="job-block-num">2.1</div>
-        <div class="job-block-title">
-          <span class="num-badge">1</span>Kỹ Sư Giám Sát Thi Công
-        </div>
-        <ul class="job-tasks">
-          <li>Giám sát kỹ thuật thi công, tổ chức thực hiện thi công lắp dựng tại hiện trường theo thiết kế và các yêu cầu kỹ thuật.</li>
-          <li>Phối hợp giám sát đảm bảo ATLĐ, bảo vệ hàng hóa, vệ sinh công trường.</li>
-          <li>Phối hợp lập kế hoạch thi công, quản lý tiến độ, kỹ thuật, chất lượng, khối lượng thi công.</li>
-          <li>Phối hợp với Quản lý dự án hoàn thiện hồ sơ nghiệm thu và thanh quyết toán công trình.</li>
-        </ul>
+    <div id="jobsLoading" style="margin-top:56px; text-align:center; padding:40px 0;">
+      <div style="display:inline-flex;align-items:center;gap:14px;color:var(--text-mid);font-size:15px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite;">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        Đang tải mô tả công việc…
       </div>
-      <div class="job-block reveal-right">
-        <div class="job-block-num">2.2</div>
-        <div class="job-block-title">
-          <span class="num-badge">2</span>Giám Đốc KT &amp; Phụ Trách Thi Công
-        </div>
-        <ul class="job-tasks">
-          <li>Từ 03 năm kinh nghiệm ở vị trí tương tự.</li>
-          <li>Quản lý điều hành nhân sự thuộc khối thi công.</li>
-          <li>Quản lý, điều phối toàn bộ công tác thi công lắp đặt các dự án của công ty.</li>
-          <li>Phối hợp cùng Quản lý dự án hoàn thiện hồ sơ nghiệm thu và thanh quyết toán công trình.</li>
-        </ul>
-      </div>
-      <div class="job-block reveal-left stagger-2">
-        <div class="job-block-num">2.3</div>
-        <div class="job-block-title">
-          <span class="num-badge">3</span>Quản Lý Dự Án
-        </div>
-        <ul class="job-tasks">
-          <li>Từ 03 năm kinh nghiệm ở vị trí tương tự.</li>
-          <li>Tìm kiếm, chăm sóc khách hàng, chào giá.</li>
-          <li>Lập kế hoạch, triển khai, điều phối chung dự án.</li>
-          <li>Giám sát và kiểm soát chi phí dự án.</li>
-          <li>Giải quyết các vấn đề phát sinh, thay mặt Ban lãnh đạo trực tiếp làm việc với Khách hàng.</li>
-        </ul>
-      </div>
-      <div class="job-block reveal-right stagger-2" style="background:linear-gradient(135deg, rgba(245,158,11,0.06), rgba(245,158,11,0.02)); border-color:rgba(245,158,11,0.2);">
+    </div>
+
+    <div class="jobs-layout" id="jobsLayout" style="display:none;">
+      <!-- Filled dynamically -->
+      <!-- Static "Môi Trường Làm Việc" block always shown -->
+      <div class="job-block reveal-right" style="background:linear-gradient(135deg, rgba(245,158,11,0.06), rgba(245,158,11,0.02)); border-color:rgba(245,158,11,0.2);">
         <div class="job-block-title" style="color:#B45309; border-bottom-color:rgba(245,158,11,0.2);">
           <span class="num-badge" style="background:var(--gold); color:#1a1a1a;">★</span>
           Môi Trường Làm Việc
@@ -915,8 +852,219 @@
   <div class="footer-copy" style="color:rgba(245,158,11,0.5);">info@amcsteel.vn · www.amcsteel.vn</div>
 </footer>
 
+<style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .sheet-error {
+    margin-top:56px; padding:32px; border-radius:12px;
+    background:rgba(239,68,68,0.06); border:1.5px solid rgba(239,68,68,0.2);
+    text-align:center; color:#DC2626;
+  }
+  .sheet-error strong { display:block; font-size:16px; margin-bottom:8px; }
+  .sheet-error span { font-size:13px; color:#64748B; }
+</style>
+
 <script>
-  // Cursor
+  // ─────────────────────────────────────────────
+  // CẤU HÌNH – chỉ cần đổi URL này nếu sheet thay đổi
+  // ─────────────────────────────────────────────
+  const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vREgILwy_njqIiQ73l70zEIRB8jCptzTe3J4yg8Ql2k4BeUyxjZmWtbNYINOUgibEIhZhZ4UiffjkaF/pub?gid=0&single=true&output=csv';
+
+  // ─────────────────────────────────────────────
+  // CSV PARSER – xử lý dấu phẩy trong ngoặc kép
+  // ─────────────────────────────────────────────
+  function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    const headers = splitCSVRow(lines[0]).map(h => h.trim().toLowerCase().replace(/\s+/g,'_'));
+    return lines.slice(1).map(line => {
+      const vals = splitCSVRow(line);
+      const obj = {};
+      headers.forEach((h, i) => { obj[h] = (vals[i] || '').trim(); });
+      return obj;
+    }).filter(r => r[headers[0]]); // bỏ dòng trống
+  }
+
+  function splitCSVRow(row) {
+    const result = []; let cur = ''; let inQ = false;
+    for (let i = 0; i < row.length; i++) {
+      const c = row[i];
+      if (c === '"') { inQ = !inQ; }
+      else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+      else { cur += c; }
+    }
+    result.push(cur);
+    return result;
+  }
+
+  // ─────────────────────────────────────────────
+  // RENDER POSITIONS GRID
+  // ─────────────────────────────────────────────
+  function renderPositions(jobs) {
+    const grid = document.getElementById('positionsGrid');
+    const stags = ['stagger-1','stagger-2','stagger-3','stagger-4'];
+    let totalChiTieu = 0, maxLuong = 0, uniqueViTri = new Set();
+
+    grid.innerHTML = '';
+
+    jobs.forEach((job, i) => {
+      // Đọc các cột – tên cột normalize về lowercase_underscore
+      const stt        = job['so_thu_tu']   || job['stt']       || String(i+1).padStart(2,'0');
+      const viTri      = job['vi_tri']      || job['vị_trí']     || 'Vị trí ' + (i+1);
+      const chiTieu    = parseInt(job['chi_tieu'] || job['chỉ_tiêu'] || '1') || 1;
+      const tuoiMax    = job['tuoi_toi_da'] || job['tuổi_tối_đa'] || '';
+      const luongTu    = parseInt(job['luong_tu']  || job['lương_từ']  || '0');
+      const luongDen   = parseInt(job['luong_den'] || job['lương_đến'] || '0');
+      const badge      = job['badge']        || 'Đang Tuyển';
+      const hienThi    = job['hien_thi']     || job['hiển_thị']  || '1';
+
+      if (hienThi === '0') return; // ẩn dòng
+
+      totalChiTieu += chiTieu;
+      if (luongDen > maxLuong) maxLuong = luongDen;
+      uniqueViTri.add(viTri);
+
+      const luongStr = luongTu && luongDen
+        ? `${luongTu} – ${luongDen} triệu`
+        : luongDen ? `Đến ${luongDen} triệu` : 'Thỏa thuận';
+
+      const card = document.createElement('div');
+      card.className = `position-card reveal ${stags[i % 4]}`;
+      card.innerHTML = `
+        <div class="card-num">${String(stt).padStart(2,'0')}</div>
+        <div class="card-title">${viTri}</div>
+        <div class="card-meta">
+          <div class="meta-row"><div class="icon">👥</div><span><strong>${chiTieu}</strong> chỉ tiêu</span></div>
+          ${tuoiMax ? `<div class="meta-row"><div class="icon">🎂</div><span>Tuổi ≤ <strong>${tuoiMax}</strong></span></div>` : ''}
+        </div>
+        <div class="card-badge">${badge}</div>
+        <div class="salary-highlight">
+          <span>💰</span><span>Lương: <span class="amount">${luongStr}</span> / tháng</span>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    // Cập nhật stats bar
+    animateCounter('statViTri', totalChiTieu, '');
+    animateCounter('statLuong', maxLuong, ' Tr+');
+    animateCounter('statViTriCount', uniqueViTri.size, ' Loại');
+
+    // Cập nhật intro text
+    document.getElementById('positionsIntro').innerHTML =
+      `Tham gia đội ngũ AMC Steel – nơi kỹ thuật gặp tầm nhìn. Chúng tôi đang tìm kiếm <strong>${totalChiTieu} chuyên gia</strong> cho <strong>${uniqueViTri.size} vị trí</strong> chiến lược.`;
+
+    // Cập nhật marquee
+    const track = document.getElementById('marqueeTrack');
+    let marq = '';
+    uniqueViTri.forEach(v => { marq += `<span>${v}</span><span class="dot">◆</span>`; });
+    marq += `<span>Lương đến ${maxLuong} Triệu</span><span class="dot">◆</span>`;
+    marq += `<span>Thưởng 2–12 Tháng</span><span class="dot">◆</span>`;
+    marq += `<span>Hà Nội &amp; Hưng Yên</span><span class="dot">◆</span>`;
+    // Nhân đôi để marquee liền mạch
+    track.innerHTML = marq + marq;
+
+    // Hiện grid
+    document.getElementById('positionsLoading').style.display = 'none';
+    grid.style.display = 'grid';
+    document.getElementById('positionsNote').style.display = 'block';
+
+    // Re-observe reveal
+    document.querySelectorAll('#positionsGrid .reveal').forEach(el => observer.observe(el));
+  }
+
+  // ─────────────────────────────────────────────
+  // RENDER JOBS LAYOUT
+  // ─────────────────────────────────────────────
+  function renderJobs(jobs) {
+    const layout = document.getElementById('jobsLayout');
+    const dirClasses = ['reveal-left','reveal-right'];
+
+    // Xoá các card cũ (giữ lại card môi trường làm việc – phần tử cuối)
+    const envCard = layout.lastElementChild;
+    layout.innerHTML = '';
+
+    jobs.forEach((job, i) => {
+      const hienThi = job['hien_thi'] || job['hiển_thị'] || '1';
+      if (hienThi === '0') return;
+
+      const viTri   = job['vi_tri']          || job['vị_trí']          || `Vị trí ${i+1}`;
+      const moTa    = job['mo_ta_cong_viec'] || job['mô_tả_công_việc'] || '';
+      const tasks   = moTa.split(';').map(t => t.trim()).filter(Boolean);
+
+      const block = document.createElement('div');
+      block.className = `job-block ${dirClasses[i % 2]}`;
+      block.innerHTML = `
+        <div class="job-block-num">2.${i+1}</div>
+        <div class="job-block-title">
+          <span class="num-badge">${i+1}</span>${viTri}
+        </div>
+        <ul class="job-tasks">
+          ${tasks.map(t => `<li>${t}</li>`).join('')}
+        </ul>`;
+      layout.appendChild(block);
+    });
+
+    // Thêm lại card môi trường làm việc
+    layout.appendChild(envCard);
+
+    document.getElementById('jobsLoading').style.display = 'none';
+    layout.style.display = 'grid';
+
+    // Re-observe
+    document.querySelectorAll('#jobsLayout .reveal-left, #jobsLayout .reveal-right').forEach(el => observer.observe(el));
+  }
+
+  // ─────────────────────────────────────────────
+  // COUNTER ANIMATION
+  // ─────────────────────────────────────────────
+  function animateCounter(id, target, suffix) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let cur = 0; const inc = target / 40;
+    el.textContent = '0' + suffix;
+    const t = setInterval(() => {
+      cur += inc;
+      if (cur >= target) { cur = target; clearInterval(t); }
+      el.textContent = Math.floor(cur) + suffix;
+    }, 40);
+  }
+
+  // ─────────────────────────────────────────────
+  // MAIN FETCH
+  // ─────────────────────────────────────────────
+  async function loadFromSheet() {
+    try {
+      const res = await fetch(SHEET_CSV_URL);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const text = await res.text();
+
+      if (!text || text.trim().length < 10) {
+        throw new Error('Sheet trống hoặc chưa có dữ liệu. Hãy thêm ít nhất 1 dòng vào Google Sheet và đảm bảo đã Publish.');
+      }
+
+      const jobs = parseCSV(text);
+      if (!jobs.length) throw new Error('Không đọc được dữ liệu. Kiểm tra lại tên cột trong sheet.');
+
+      renderPositions(jobs);
+      renderJobs(jobs);
+
+    } catch (err) {
+      console.error('Sheet error:', err);
+      showSheetError(err.message);
+    }
+  }
+
+  function showSheetError(msg) {
+    const errHTML = `<div class="sheet-error reveal">
+      <strong>⚠ Không thể tải dữ liệu từ Google Sheet</strong>
+      <span>${msg}</span>
+    </div>`;
+    document.getElementById('positionsLoading').outerHTML = errHTML;
+    document.getElementById('jobsLoading').style.display = 'none';
+    document.getElementById('jobsLayout').style.display = 'grid';
+  }
+
+  // ─────────────────────────────────────────────
+  // CURSOR
+  // ─────────────────────────────────────────────
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
   let mouseX=0, mouseY=0, ringX=0, ringY=0;
@@ -930,12 +1078,14 @@
     ring.style.left=ringX+'px'; ring.style.top=ringY+'px';
     requestAnimationFrame(animateRing);
   })();
-  document.querySelectorAll('a,button,.position-card,.benefit-card,.req-item').forEach(el=>{
+  document.querySelectorAll('a,button,.benefit-card,.req-item').forEach(el=>{
     el.addEventListener('mouseenter',()=>{ cursor.style.width='18px'; cursor.style.height='18px'; ring.style.borderColor='rgba(21,101,192,0.7)'; });
     el.addEventListener('mouseleave',()=>{ cursor.style.width='10px'; cursor.style.height='10px'; ring.style.borderColor='rgba(21,101,192,0.45)'; });
   });
 
-  // Particles
+  // ─────────────────────────────────────────────
+  // PARTICLES
+  // ─────────────────────────────────────────────
   const pc = document.getElementById('particles');
   for(let i=0;i<22;i++){
     const p=document.createElement('div'); p.className='particle';
@@ -944,13 +1094,17 @@
     pc.appendChild(p);
   }
 
-  // Scroll reveal
-  const observer=new IntersectionObserver(entries=>{
+  // ─────────────────────────────────────────────
+  // SCROLL REVEAL
+  // ─────────────────────────────────────────────
+  const observer = new IntersectionObserver(entries=>{
     entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
   },{threshold:0.1});
   document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>observer.observe(el));
 
-  // Counter
+  // ─────────────────────────────────────────────
+  // COUNTER (fixed elements)
+  // ─────────────────────────────────────────────
   const cObs=new IntersectionObserver(entries=>{
     entries.forEach(e=>{
       if(e.isIntersecting&&!e.target.classList.contains('counted')){
@@ -963,11 +1117,18 @@
   },{threshold:0.5});
   document.querySelectorAll('.counter').forEach(el=>cObs.observe(el));
 
-  // Nav on scroll
+  // ─────────────────────────────────────────────
+  // NAV SCROLL
+  // ─────────────────────────────────────────────
   window.addEventListener('scroll',()=>{
     const nav=document.getElementById('mainNav');
     nav.style.background=window.scrollY>60?'rgba(255,255,255,0.97)':'rgba(255,255,255,0.88)';
   });
+
+  // ─────────────────────────────────────────────
+  // KHỞI ĐỘNG
+  // ─────────────────────────────────────────────
+  loadFromSheet();
 </script>
 </body>
 </html>
