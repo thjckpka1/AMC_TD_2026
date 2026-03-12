@@ -758,7 +758,7 @@
       </div>
     </div>
 
-    <div class="jobs-layout" id="reqLayout" style="display:none;"></div>
+    <div class="jobs-layout" id="reqLayout" style="display:none; margin-top:56px;"></div>
 
   </div>
 </section>
@@ -995,7 +995,16 @@
     document.getElementById('positionsNote').style.display = 'block';
 
     // Re-observe reveal
-    document.querySelectorAll('#positionsGrid .reveal').forEach(el => observer.observe(el));
+    requestAnimationFrame(() => {
+      document.querySelectorAll('#positionsGrid .reveal').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          el.classList.add('visible');
+        } else {
+          observer.observe(el);
+        }
+      });
+    });
   }
 
   // ─────────────────────────────────────────────
@@ -1035,34 +1044,52 @@
 
     document.getElementById('jobsLoading').style.display = 'none';
     layout.style.display = 'grid';
-
-    // Re-observe
-    document.querySelectorAll('#jobsLayout .reveal-left, #jobsLayout .reveal-right').forEach(el => observer.observe(el));
+    requestAnimationFrame(() => {
+      document.querySelectorAll('#jobsLayout .reveal-left, #jobsLayout .reveal-right').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          el.classList.add('visible');
+        } else {
+          observer.observe(el);
+        }
+      });
+    });
   }
 
   // ─────────────────────────────────────────────
-  // RENDER REQUIREMENTS – y chang renderJobs, đọc cột yeu_cau (index 8)
+  // RENDER REQUIREMENTS – bố cục giống hệt renderJobs
   // ─────────────────────────────────────────────
   function renderRequirements(jobs) {
     const layout = document.getElementById('reqLayout');
     const dirClasses = ['reveal-left','reveal-right'];
     layout.innerHTML = '';
 
+    let visibleIdx = 0;
     jobs.forEach((job, i) => {
-      const hienThi = job['hien_thi'] || '1';
-      if (hienThi === '0') return;
+      // Đọc hien_thi: thử tên cột normalize, fallback _raw index 10
+      const hienThi = job['hien_thi'] || job['hinthị'] || job._raw?.[10] || '1';
+      if (String(hienThi).trim() === '0') return;
 
-      const viTri  = job['vi_tri']   || `Vị trí ${i+1}`;
-      // Đọc yeu_cau theo tên cột, fallback sang _raw (index 8)
-      const yeuCauRaw = job['yeu_cau'] || job._raw?.[8] || '';
+      // Đọc vi_tri: tên cột normalize + fallback _raw index 1
+      const viTri = job['vi_tri'] || job['vị_trí'] || job._raw?.[1] || `Vị trí ${i+1}`;
+
+      // Đọc yeu_cau: thử nhiều tên cột có thể xảy ra sau normalize + fallback _raw index 8
+      const yeuCauRaw = job['yeu_cau']
+        || job['yeu_cu']
+        || job['yeucau']
+        || job['yêu_cầu']
+        || job['yêu_cu']
+        || job._raw?.[8]
+        || '';
+
       const reqs = yeuCauRaw.split(';').map(r => r.trim()).filter(Boolean);
 
       const block = document.createElement('div');
-      block.className = `job-block ${dirClasses[i % 2]}`;
+      block.className = `job-block ${dirClasses[visibleIdx % 2]}`;
       block.innerHTML = `
-        <div class="job-block-num">3.${i+1}</div>
+        <div class="job-block-num">3.${visibleIdx+1}</div>
         <div class="job-block-title">
-          <span class="num-badge">${i+1}</span>${viTri}
+          <span class="num-badge">${visibleIdx+1}</span>${viTri}
         </div>
         <ul class="job-tasks">
           ${reqs.length
@@ -1070,11 +1097,40 @@
             : '<li>Liên hệ để biết thêm chi tiết yêu cầu.</li>'}
         </ul>`;
       layout.appendChild(block);
+      visibleIdx++;
     });
+
+    // Card tĩnh "Lưu Ý Ứng Tuyển" – luôn hiển thị ở cuối (giống card Môi Trường bên Jobs)
+    const noteCard = document.createElement('div');
+    noteCard.className = `job-block reveal-right`;
+    noteCard.style.cssText = 'background:linear-gradient(135deg,rgba(245,158,11,0.06),rgba(245,158,11,0.02));border-color:rgba(245,158,11,0.2);';
+    noteCard.innerHTML = `
+      <div class="job-block-num" style="color:rgba(245,158,11,0.08);">★</div>
+      <div class="job-block-title" style="color:#B45309;border-bottom-color:rgba(245,158,11,0.2);">
+        <span class="num-badge" style="background:var(--gold);color:#1a1a1a;">★</span>
+        Lưu Ý Ứng Tuyển
+      </div>
+      <ul class="job-tasks">
+        <li>Mức lương thỏa thuận tùy năng lực và kinh nghiệm thực tế của ứng viên.</li>
+        <li>Ưu tiên ứng viên có kinh nghiệm trong ngành xây dựng công nghiệp / kết cấu thép.</li>
+        <li>Gửi CV kèm ảnh chân dung, thông tin liên hệ rõ ràng qua email hoặc hotline.</li>
+        <li>Phản hồi trong vòng 48 giờ làm việc kể từ khi nhận được hồ sơ.</li>
+      </ul>`;
+    layout.appendChild(noteCard);
 
     document.getElementById('reqLoading').style.display = 'none';
     layout.style.display = 'grid';
-    document.querySelectorAll('#reqLayout .reveal-left, #reqLayout .reveal-right').forEach(el => observer.observe(el));
+    // Dùng rAF để đảm bảo DOM đã paint trước khi check viewport
+    requestAnimationFrame(() => {
+      document.querySelectorAll('#reqLayout .reveal-left, #reqLayout .reveal-right').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          el.classList.add('visible'); // đã trong viewport → hiện luôn
+        } else {
+          observer.observe(el);
+        }
+      });
+    });
   }
 
   function toggleAcc(item) {
@@ -1102,33 +1158,13 @@
       const res = await fetch(SHEET_CSV_URL);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-      // Google Sheets CSV đôi khi trả về bytes UTF-8 nhưng bị browser decode sai.
-      // Giải pháp: đọc raw ArrayBuffer → thử UTF-8 trước, nếu vẫn mojibake thì
-      // decode latin1 rồi encode lại thủ công qua escape/decodeURIComponent.
-      const buffer = await res.arrayBuffer();
-      const bytes = new Uint8Array(buffer);
-
-      // Phát hiện BOM UTF-8 (EF BB BF) hoặc thử decode UTF-8
-      let text;
-      try {
-        const decoded = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
-        // Kiểm tra xem có bị mojibake không (dấu hiệu: Ã xuất hiện nhiều)
-        const mojibakeScore = (decoded.match(/Ã/g) || []).length;
-        if (mojibakeScore > 3) throw new Error('mojibake');
-        text = decoded;
-      } catch {
-        // Fallback: decode từng byte latin1 → chuỗi binary → encode đúng UTF-8
-        let latin1 = '';
-        bytes.forEach(b => { latin1 += String.fromCharCode(b); });
-        try {
-          text = decodeURIComponent(escape(latin1));
-        } catch {
-          text = latin1; // last resort
-        }
-      }
+      // Google Sheets luôn trả UTF-8 – dùng res.text() là đủ và an toàn nhất.
+      // Logic ArrayBuffer + mojibake detection cũ có bug: tiếng Việt UTF-8 hợp lệ
+      // cũng chứa byte 0xC3 (Ã khi đọc sai) → false positive → throw sai → spinner mãi.
+      const text = await res.text();
 
       if (!text || text.trim().length < 10) {
-        throw new Error('Sheet trống hoặc chưa có dữ liệu. Hãy thêm ít nhất 1 dòng vào Google Sheet và đảm bảo đã Publish.');
+        throw new Error('Sheet trống hoặc chưa có dữ liệu.');
       }
 
       const jobs = parseCSV(text);
@@ -1149,9 +1185,12 @@
       <strong>⚠ Không thể tải dữ liệu từ Google Sheet</strong>
       <span>${msg}</span>
     </div>`;
+    // Ẩn tất cả loading spinners và hiện layout trống
     document.getElementById('positionsLoading').outerHTML = errHTML;
     document.getElementById('jobsLoading').style.display = 'none';
     document.getElementById('jobsLayout').style.display = 'grid';
+    document.getElementById('reqLoading').style.display = 'none';
+    document.getElementById('reqLayout').style.display = 'grid';
   }
 
   // ─────────────────────────────────────────────
