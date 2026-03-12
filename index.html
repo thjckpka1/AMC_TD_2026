@@ -910,21 +910,30 @@
   const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vREgILwy_njqIiQ73l70zEIRB8jCptzTe3J4yg8Ql2k4BeUyxjZmWtbNYINOUgibEIhZhZ4UiffjkaF/pub?gid=0&single=true&output=csv';
 
   // ─────────────────────────────────────────────
-  // CSV/TSV PARSER – tự nhận dạng tab hoặc dấu phẩy
+  // CSV/TSV PARSER – trả về mảng object, key = tên cột normalize
+  // Đồng thời lưu _cols[] để fallback theo index nếu tên cột bị lỗi encoding
   // ─────────────────────────────────────────────
   function parseCSV(text) {
     const lines = text.trim().split(/\r?\n/);
-    // Phát hiện separator: nếu dòng đầu có nhiều tab hơn dấu phẩy → dùng tab
     const firstLine = lines[0];
     const sep = (firstLine.split('\t').length > firstLine.split(',').length) ? '\t' : ',';
 
-    const headers = splitRow(lines[0], sep).map(h => h.trim().toLowerCase().replace(/\s+/g,'_').replace(/[^\w]/g,''));
+    // Normalize header: lowercase, thay space→_, bỏ ký tự đặc biệt
+    const rawHeaders = splitRow(lines[0], sep);
+    const headers = rawHeaders.map(h => h.trim().toLowerCase().replace(/\s+/g,'_').replace(/[^\w]/g,''));
+
+    // Cột chuẩn theo THỨ TỰ (fallback khi encoding lỗi làm tên cột sai)
+    const COLS = ['so_thu_tu','vi_tri','chi_tieu','tuoi_toi_da','luong_tu','luong_den','badge','mo_ta_cong_viec','yeu_cau','uu_tien','hien_thi'];
+
     return lines.slice(1).map(line => {
       const vals = splitRow(line, sep);
       const obj = {};
+      // Gán theo tên cột normalize
       headers.forEach((h, i) => { obj[h] = (vals[i] || '').trim(); });
+      // Gán thêm theo tên cột chuẩn (theo index) để đảm bảo luôn có key đúng
+      COLS.forEach((c, i) => { if (vals[i] !== undefined) obj[c] = (vals[i] || '').trim(); });
       return obj;
-    }).filter(r => Object.values(r).some(v => v)); // bỏ dòng hoàn toàn trống
+    }).filter(r => Object.values(r).some(v => v));
   }
 
   function splitRow(row, sep) {
